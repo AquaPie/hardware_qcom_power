@@ -38,15 +38,17 @@ using android::hardware::joinRpcThreadpool;
 
 // Generated HIDL files
 #ifdef V1_0_HAL
+using android::hardware::power::V1_0::IPower;
 using android::hardware::power::V1_0::implementation::Power;
 #else
+using android::hardware::power::V1_1::IPower;
 using android::hardware::power::V1_1::implementation::Power;
 #endif
 
 int main() {
 
     status_t status;
-    android::sp<Power> service = nullptr;
+    android::sp<IPower> service = nullptr;
 
 #ifdef V1_0_HAL
     ALOGI("Power HAL Service 1.0 for QCOM is starting.");
@@ -63,7 +65,7 @@ int main() {
 
     configureRpcThreadpool(1, true /*callerWillJoin*/);
 
-    status = service->registerAsSystemService();
+    status = service->registerAsService();
     if (status != OK) {
         ALOGE("Could not register service for Power HAL Iface (%d).", status);
         goto shutdown;
